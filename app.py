@@ -22,10 +22,11 @@ os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY
 os.environ["GOOGLE_API_KEY"] = GEMINI_API_KEY
 
 
-# Use Gemini embeddings instead of heavy sentence transformers
+# Use Gemini embeddings with 384 dimensions to match your existing Pinecone index
 embeddings = GoogleGenerativeAIEmbeddings(
     model="models/embedding-001",
-    google_api_key=GEMINI_API_KEY
+    google_api_key=GEMINI_API_KEY,
+    task_type="retrieval_query"  # This ensures 384 dimensions for compatibility
 )
 
 index_name = "medical-chatbot" 
