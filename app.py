@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request
-from src.helper import download_hugging_face_embeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains import create_retrieval_chain
@@ -22,7 +22,11 @@ os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY
 os.environ["GOOGLE_API_KEY"] = GEMINI_API_KEY
 
 
-embeddings = download_hugging_face_embeddings()
+# Use Gemini embeddings instead of heavy sentence transformers
+embeddings = GoogleGenerativeAIEmbeddings(
+    model="models/embedding-001",
+    google_api_key=GEMINI_API_KEY
+)
 
 index_name = "medical-chatbot" 
 # Embed each chunk and upsert the embeddings into your Pinecone index.
